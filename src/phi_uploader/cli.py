@@ -16,7 +16,7 @@ Build JSON collections only:
 Upload the built JSON collections to PHI-DB:
 
     phi-uploader run \
-         --email sebastiano.cinetto@unipd.it --password xxxxxx \
+         --email sebastiano.cinetto@unipd.it \
          --dataset WashU \
          --skip-build
 
@@ -28,6 +28,7 @@ Upload the built JSON collections to PHI-DB:
 from __future__ import annotations
 
 import argparse
+import getpass
 import json
 import logging
 import sys
@@ -416,11 +417,14 @@ def cli_run(argv: list[str]) -> None:
     ap.add_argument("--acquisition")
     ap.add_argument("--feature")
     ap.add_argument("--email", required=True, help="API login email")
-    ap.add_argument("--password", required=True, help="API password")
+    ap.add_argument("--password", help="API login password")
     ap.add_argument("--base-url", default=_DEFAULT_BASE_URL)
     ap.add_argument("--skip-build", default=True, action="store_true", help="Assume JSON collections already exist under --root/API")
     ap.add_argument("--retry-failed", default=False, action="store_true", help="(Re)upload only collections stored in API/not_uploaded")
     ns = ap.parse_args(argv)
+
+    if ns.password is None:
+        ns.password = getpass.getpass("Enter API password: ")
 
     if not ns.skip_build:
         args_for_build = [
@@ -434,7 +438,6 @@ def cli_run(argv: list[str]) -> None:
             args_for_build += ["--acquisition", ns.acquisition]
         if ns.feature:
             args_for_build += ["--feature", ns.feature]
-
         cli_build(args_for_build)  # type: ignore[arg-type]
 
     root = Path(ns.root).resolve()

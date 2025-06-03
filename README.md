@@ -86,16 +86,16 @@ phi-uploader run \
 
 ### CLI Flags for the `run` Command
 
-| Flag              | Description                                                                                                       | Default/Required            |
-| ----------------- |-------------------------------------------------------------------------------------------------------------------|-----------------------------|
-| `--patient`       | Optional CSV/TSV/XLSX file with participant data (if not skipping the build, used to generate JSON collections).  | Optional                    |
-| `--acquisition`   | Optional CSV/TSV/XLSX file with acquisitions data (if not skipping the build, used to generate JSON collections). | Optional                    |
-| `--feature`       | Optional CSV/TSV/XLSX file with features data (if not skipping the build, used to generate JSON collections).     | Optional                    |
-| `--email`         | PHI-DB login email used for authentication.                                                                       | Required                    |
-| `--password`      | PHI-DB login password used for authentication.                                                                    | Required                    |
-| `--base-url`      | Base URL for the API                                                                                              | Defined already by the tool |
-| `--skip-build`    | When present, skips building JSON collections and uses those already available in the `API/` folder.              | Default: True               |
-| `--retry-failed`  | When present, (re)uploads only collections in `API/not_uploaded` and overwrites their TSV/JSON summaries.         | Default: False              |
+| Flag              | Description                                                                                                       | Default/Required                              |
+| ----------------- |-------------------------------------------------------------------------------------------------------------------|-----------------------------------------------|
+| `--patient`       | Optional CSV/TSV/XLSX file with participant data (if not skipping the build, used to generate JSON collections).  | Optional                                      |
+| `--acquisition`   | Optional CSV/TSV/XLSX file with acquisitions data (if not skipping the build, used to generate JSON collections). | Optional                                      |
+| `--feature`       | Optional CSV/TSV/XLSX file with features data (if not skipping the build, used to generate JSON collections).     | Optional                                      |
+| `--email`         | PHI-DB login email used for authentication.                                                                       | Required                                      |
+| `--password`      | PHI-DB login password used for authentication.                                                                    | Optional (can be entered later when prompted) |
+| `--base-url`      | Base URL for the API                                                                                              | Defined already by the tool                   |
+| `--skip-build`    | When present, skips building JSON collections and uses those already available in the `API/` folder.              | Default: True                                 |
+| `--retry-failed`  | When present, (re)uploads only collections in `API/not_uploaded` and overwrites their TSV/JSON summaries.         | Default: False                                |
 
 
 ## Typical errors
