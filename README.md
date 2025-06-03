@@ -59,7 +59,7 @@ This will generate the following files in ./API/ depending on the input files:
 ### Run a collection
 ```bash
 phi-uploader run \
-    --email hello@world.it --password xxxxxx \
+    --email hello@world.it \
     --dataset MyStudy \
     --skip-build
 ```
