@@ -1,65 +1,101 @@
-# phi-uploader
-This app uploads patients, acquisitions and features to the PHI-DB database.
+# phi-uploader 🚀
+A lightweight **command-line helper** that turns your tabular data (patients / acquisitions / features) into Postman collections and, if you wish, bulk-uploads them to **PHI-DB** in a single shot.
 
-## Quick start
+---
 
-### Install 
+## Features
+* **Two sub-commands**  
+  * `build` – generate JSON collections only (offline).  
+  * `run`  – generate **and** `POST` them to the API (online).
+* Works with **CSV, TSV or Excel** sheets.
+* Strict validation of acquisition / feature types.
+* Single login per session 
+
+---
+
+## Prerequisites
+* Python ≥ 3.9 (download from [python.org](https://www.python.org/downloads/))
+* `git` (download from [git-scm.com](https://git-scm.com/downloads))
+* A PHI-DB account (e-mail and password) for the `run` step.
+
+---
+
+## Installation (5 lines)
 
 ```bash
-# clone the repo
-git clone https://github.com/<YOUR-ORG>/phi-uploader.git
+# grab the source
+git clone https://github.com/seba-96/phi-uploader.git
 cd phi-uploader
 
-# create and activate a virtual environment (recommended)
-python -m venv .venv
-source .venv/bin/activate          # Windows: .venv\Scripts\activate
+# Create virtual environment (optional but recommended)
+python -m venv .venv 
+# Activate the virtual environment (Linux / macOS)
+source .venv/bin/activate  
+# for Windows run the following instead: . .venv\\Scripts\\Activate.ps1
 
-# install in editable mode – pulls in pandas + requests automatically
+# install in editable mode (creates the 'phi-uploader' command)
 pip install -U pip
 pip install -e .
 ```
 
-### Basic usage
-
+## Usage
+### Show help
 ```bash
-# show built-in help
-phi-uploader --help            # or python -m phi_uploader.cli --help
-
-# generate Postman collections only
+phi-uploader --help
+```
+### Build a collection
+```bash
 phi-uploader build \
-    --template postman_base.json \
-    --participants participants.csv \
-    --dataset MyStudy
-
-# build and upload in one go
-phi-uploader run \
-    --template postman_base.json \
-    --participants participants.csv \
-    --email alice@example.com \
-    --password ********
+    --patient participants.tsv \
+    --acquisition acquisitions.tsv \
+    --dataset MyStudy \
+    --behavioral --clinical
 ```
-## Typical 422 Error Responses
+This will generate the following files in ./API/ depending on the input files:
 
-A 422 status code means the request was well-formed but contained semantic errors. Some common examples include:
+MyStudy_add_patient_API.json
+MyStudy_add_acquisition_API.json
+MyStudy_add_feature_API.json
 
-- **{"error": "Remote has already been taken"}**  
-  Indicates that the patient has been already uploaded.
-
-- **{"errors": ["Missing patient for <participant_id>"]}**  
-  Indicates that the patient related to the given acquisition has been not yet uploaded. First upload the patient, then the acquisition.
-
-- **{"acquisition_type": ["has already been taken"]}**  
-  Indicates that the acquisition provided for the given patient has been already uploaded. Each patient can have only one acquisition of each type.
-
-
-### App Updating
-
-To update the app, run:
-
+### Run a collection
 ```bash
-git pull
-pip install -e .  # re-installs only if requirements changed
+phi-uploader run \
+    --email hello@world.it --password xxxxxx \
+    --dataset MyStudy \
+    --skip-build
 ```
+
+| Flag              | Purpose                                                    |
+| ----------------- |------------------------------------------------------------|
+| `--features FILE` | table with feature rows                                    |
+| `--n-test 10`     | build/upload **first 10 rows only** (for testing purposes) |
+| `--skip-build`    | in `run` mode: reuse JSON already in `API/`                |
+
+## Typical 422 errors
+| JSON response                | Meaning / fix                                                                       |
+|------------------------------|-------------------------------------------------------------------------------------|
+| Remote has already been taken | Patient already exists in PHI-DB.                                                   |
+| Missing patient for <id>     | Upload the patient **before** its acquisition.                                      |
+| has already been taken       | Each patient may have only **one** acquisition per type.                            |
+| Missing root folder for patient | Patient folder is missing in PHI. Check that participant_id and dataset are correct |
+
+
+
+## Updating the tool
+```bash
+# if you installed in editable mode
+git pull
+pip install -e .
+# if you installed in non-editable mode
+pip install -U --force-reinstall .
+```
+
+## License
+MIT — feel free to use, modify and share.
+
+## What changed?
+First release, there are no changes yet.
+
 
 
 

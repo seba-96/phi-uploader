@@ -11,16 +11,14 @@ Build JSON collections only::
          --acquisition ./Clinical_connectome/UNIPD/WashU/acquisitions.tsv \
          --dataset WashU \
          --behavioral \
-         --clinical \
-         --n-test 8
+         --clinical
 
 Build and immediately upload::
 
     phi-uploader run \
          --email sebastiano.cinetto@unipd.it --password xxxxxx \
          --dataset WashU \
-         --skip-build \
-         --retry-failed
+         --skip-build
 
 """
 
