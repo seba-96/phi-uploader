@@ -1,0 +1,634 @@
+{
+	"info": {
+		"_postman_id": "8d740913-bbc9-4674-bc75-388d1e0e1ef6",
+		"name": "EBRAINS APIs v2",
+		"description": ".",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36400398",
+		"_collection_link": "https://martian-desert-591706.postman.co/workspace/Fittinglabs'-Workspace~3bd5b0b3-c37d-413a-a76d-c53a72d23a88/collection/36400398-8d740913-bbc9-4674-bc75-388d1e0e1ef6?action=share&source=collection_link&creator=36400398"
+	},
+	"item": [
+		{
+			"name": "Add patient",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"disease_id\": \"ST\",\r\n    \"center_id\": \"UNIPD\",\r\n    \"data_id\": \"999\",\r\n    \"remote_id\": \"ST_UNIPD_999\",\r\n    \"dataset\": \"Dataset_UNIPD_999\",\r\n    \"disease_notes\": \"Some notes\",\r\n    \"education\": 3,\r\n    \"sex\": \"F\",\r\n    \"clinical\": {},\r\n    \"behavioral\": {}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://phidb.pnc.unipd.it/api/v1/patients",
+					"protocol": "https",
+					"host": [
+						"phidb",
+						"pnc",
+						"unipd",
+						"it"
+					],
+					"path": [
+						"api",
+						"v1",
+						"patients"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add patient 5M",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"disease_id\": \"ST\",\r\n    \"center_id\": \"UNIPD\",\r\n    \"data_id\": \"888\",\r\n    \"remote_id\": \"ST_UNIPD_888\",\r\n    \"dataset\": \"Dataset_UNIPD_888\",\r\n    \"disease_notes\": \"Some notes\",\r\n    \"education\": 3,\r\n    \"sex\": \"F\",\r\n    \"clinical\": {},\r\n    \"behavioral\": {}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://phidb.pnc.unipd.it/api/v1/patients",
+					"protocol": "https",
+					"host": [
+						"phidb",
+						"pnc",
+						"unipd",
+						"it"
+					],
+					"path": [
+						"api",
+						"v1",
+						"patients"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add patient fail",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"disease_id\": \"ST\",\r\n    \"center_id\": \"UNIPD\",\r\n    \"data_id\": \"111\",\r\n    \"remote_id\": \"ST_UNIPD_111\",\r\n    \"dataset\": \"Dataset_UNIPD_1\",\r\n    \"disease_notes\": \"Some notes\",\r\n    \"education\": 3,\r\n    \"sex\": \"F\",\r\n    \"clinical\": {},\r\n    \"behavioral\": {}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://phidb.pnc.unipd.it/api/v1/patients",
+					"protocol": "https",
+					"host": [
+						"phidb",
+						"pnc",
+						"unipd",
+						"it"
+					],
+					"path": [
+						"api",
+						"v1",
+						"patients"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add patient fail missing center",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"disease_id\": \"ST\",\r\n    \"center_id\": \"UNITO\",\r\n    \"data_id\": \"111\",\r\n    \"remote_id\": \"ST_UNITO_111\",\r\n    \"dataset\": \"Dataset_UNITO_1\",\r\n    \"disease_notes\": \"Some notes\",\r\n    \"education\": 3,\r\n    \"sex\": \"F\",\r\n    \"clinical\": {},\r\n    \"behavioral\": {}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://phidb.pnc.unipd.it/api/v1/patients",
+					"protocol": "https",
+					"host": [
+						"phidb",
+						"pnc",
+						"unipd",
+						"it"
+					],
+					"path": [
+						"api",
+						"v1",
+						"patients"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add patient fail already exist",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"disease_id\": \"ST\",\r\n    \"center_id\": \"UNIPD\",\r\n    \"data_id\": \"999\",\r\n    \"remote_id\": \"ST_UNIPD_999\",\r\n    \"dataset\": \"Dataset_UNIPD_999\",\r\n    \"disease_notes\": \"Some notes\",\r\n    \"education\": 3,\r\n    \"sex\": \"F\",\r\n    \"clinical\": {},\r\n    \"behavioral\": {}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://phidb.pnc.unipd.it/api/v1/patients",
+					"protocol": "https",
+					"host": [
+						"phidb",
+						"pnc",
+						"unipd",
+						"it"
+					],
+					"path": [
+						"api",
+						"v1",
+						"patients"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add acquisition",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"remote_id\": \"ST_UNIPD_999\",\r\n    \"acquisition_type\": \"T1w\",\r\n    \"general_comments\": \"Some comments\",\r\n    \"head_coil\": \"32\",\r\n    \"tesla_field\": \"3\",\r\n    \"manufacturer\": \"Siemens Healthineers\",\r\n    \"machine\": \"Ingenia\",\r\n    \"resolution_acquis\": \"0.875 x 0.987 x 1\",\r\n    \"resolution_recon\": \"0.875 x 0.987 x 1\",\r\n    \"resolution_x\": 100,\r\n    \"resolution_y\": 250,\r\n    \"resolution_z\": 600,\r\n    \"time_repetition\": 0.7,\r\n    \"echo_time\": 1.2,\r\n    \"flip_angle\": 12,\r\n    \"bval\": [\r\n        \"0\",\r\n        \"1000\",\r\n        \"2000\"\r\n    ],\r\n    \"bval_bin\": 3,\r\n    \"bvecs_num\": 2,\r\n    \"vol_num\": 154,\r\n    \"acquisition_plan\": \"Axial\",\r\n    \"injec_info\": \"Some info\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://phidb.pnc.unipd.it/api/v1/imaging_acquisitions",
+					"protocol": "https",
+					"host": [
+						"phidb",
+						"pnc",
+						"unipd",
+						"it"
+					],
+					"path": [
+						"api",
+						"v1",
+						"imaging_acquisitions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add acquisition missing patient",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"remote_id\": \"ST_UNIPD_888\",\r\n    \"acquisition_type\": \"T1w\",\r\n    \"general_comments\": \"Some comments\",\r\n    \"head_coil\": \"32\",\r\n    \"tesla_field\": \"3\",\r\n    \"manufacturer\": \"Siemens Healthineers\",\r\n    \"machine\": \"Ingenia\",\r\n    \"resolution_acquis\": \"0.875 x 0.987 x 1\",\r\n    \"resolution_recon\": \"0.875 x 0.987 x 1\",\r\n    \"resolution_x\": 100,\r\n    \"resolution_y\": 250,\r\n    \"resolution_z\": 600,\r\n    \"time_repetition\": 0.7,\r\n    \"echo_time\": 1.2,\r\n    \"flip_angle\": 12,\r\n    \"bval\": [\r\n        \"0\",\r\n        \"1000\",\r\n        \"2000\"\r\n    ],\r\n    \"bval_bin\": 3,\r\n    \"bvecs_num\": 2,\r\n    \"vol_num\": 154,\r\n    \"acquisition_plan\": \"Axial\",\r\n    \"injec_info\": \"Some info\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://phidb.pnc.unipd.it/api/v1/imaging_acquisitions",
+					"protocol": "https",
+					"host": [
+						"phidb",
+						"pnc",
+						"unipd",
+						"it"
+					],
+					"path": [
+						"api",
+						"v1",
+						"imaging_acquisitions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add acquisition missing files",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"remote_id\": \"ST_UNIPD_999\",\r\n    \"acquisition_type\": \"DIXON\",\r\n    \"general_comments\": \"Some comments\",\r\n    \"head_coil\": \"32\",\r\n    \"tesla_field\": \"3\",\r\n    \"manufacturer\": \"Siemens Healthineers\",\r\n    \"machine\": \"Ingenia\",\r\n    \"resolution_acquis\": \"0.875 x 0.987 x 1\",\r\n    \"resolution_recon\": \"0.875 x 0.987 x 1\",\r\n    \"resolution_x\": 100,\r\n    \"resolution_y\": 250,\r\n    \"resolution_z\": 600,\r\n    \"time_repetition\": 0.7,\r\n    \"echo_time\": 1.2,\r\n    \"flip_angle\": 12,\r\n    \"bval\": [\r\n        \"0\",\r\n        \"1000\",\r\n        \"2000\"\r\n    ],\r\n    \"bval_bin\": 3,\r\n    \"bvecs_num\": 2,\r\n    \"vol_num\": 154,\r\n    \"acquisition_plan\": \"Axial\",\r\n    \"injec_info\": \"Some info\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://phidb.pnc.unipd.it/api/v1/imaging_acquisitions",
+					"protocol": "https",
+					"host": [
+						"phidb",
+						"pnc",
+						"unipd",
+						"it"
+					],
+					"path": [
+						"api",
+						"v1",
+						"imaging_acquisitions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add acquisition missing folder",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"remote_id\": \"ST_UNIPD_999\",\r\n    \"acquisition_type\": \"hdeeg\",\r\n    \"general_comments\": \"Some comments\",\r\n    \"head_coil\": \"32\",\r\n    \"tesla_field\": \"3\",\r\n    \"manufacturer\": \"Siemens Healthineers\",\r\n    \"machine\": \"Ingenia\",\r\n    \"resolution_acquis\": \"0.875 x 0.987 x 1\",\r\n    \"resolution_recon\": \"0.875 x 0.987 x 1\",\r\n    \"resolution_x\": 100,\r\n    \"resolution_y\": 250,\r\n    \"resolution_z\": 600,\r\n    \"time_repetition\": 0.7,\r\n    \"echo_time\": 1.2,\r\n    \"flip_angle\": 12,\r\n    \"bval\": [\r\n        \"0\",\r\n        \"1000\",\r\n        \"2000\"\r\n    ],\r\n    \"bval_bin\": 3,\r\n    \"bvecs_num\": 2,\r\n    \"vol_num\": 154,\r\n    \"acquisition_plan\": \"Axial\",\r\n    \"injec_info\": \"Some info\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://phidb.pnc.unipd.it/api/v1/imaging_acquisitions",
+					"protocol": "https",
+					"host": [
+						"phidb",
+						"pnc",
+						"unipd",
+						"it"
+					],
+					"path": [
+						"api",
+						"v1",
+						"imaging_acquisitions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add feature",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"remote_id\": \"ST_UNIPD_888\",\r\n    \"feature_type\": \"pet\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://phidb.pnc.unipd.it/api/v1/features",
+					"protocol": "https",
+					"host": [
+						"phidb",
+						"pnc",
+						"unipd",
+						"it"
+					],
+					"path": [
+						"api",
+						"v1",
+						"features"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add feature missing patient",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"remote_id\": \"ST_UNIBO_0003\",\r\n    \"feature_type\": \"pet\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://phidb.pnc.unipd.it/api/v1/features",
+					"protocol": "https",
+					"host": [
+						"phidb",
+						"pnc",
+						"unipd",
+						"it"
+					],
+					"path": [
+						"api",
+						"v1",
+						"features"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add feature missing folder",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"remote_id\": \"ST_UNIPD_999\",\r\n    \"feature_type\": \"eeg\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://phidb.pnc.unipd.it/api/v1/features",
+					"protocol": "https",
+					"host": [
+						"phidb",
+						"pnc",
+						"unipd",
+						"it"
+					],
+					"path": [
+						"api",
+						"v1",
+						"features"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const res = pm.response;",
+							"pm.environment.set('token', res.headers.find(e => e.key === 'Authorization')['value']);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"hello@world.com\",\r\n    \"password\": \"XXXXXX\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://phidb.pnc.unipd.it/api/v1/auth/sign_in",
+					"protocol": "https",
+					"host": [
+						"phidb",
+						"pnc",
+						"unipd",
+						"it"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"sign_in"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"pm.request.addHeader('authorization', pm.environment.get('token'));"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

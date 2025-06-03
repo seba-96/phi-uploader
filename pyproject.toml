@@ -1,0 +1,17 @@
+# pyproject.toml  (PEP 621 metadata)
+[project]
+name = "phi-uploader"
+version = "0.1.0"
+description = "CLI to generate and upload PHI-DB Postman collections"
+authors = [{ name = "Sebastiano Cinetto", email = "sebastiano.cinetto@unipd.it" }]
+license = { text = "MIT" }        # or BSD-3-Clause, etc.
+readme = "README.md"
+requires-python = ">=3.9"
+
+dependencies = [
+    "pandas>=2.2",
+    "requests>=2.32",
+]
+
+[project.scripts]
+phi-uploader = "phi_uploader.cli:main"
