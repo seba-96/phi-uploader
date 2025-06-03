@@ -1,5 +1,5 @@
 # phi-uploader 🚀
-A lightweight **command-line helper** that turns your tabular data (patients / acquisitions / features) into Postman collections and, if you wish, bulk-uploads them to **PHI-DB** in a single shot.
+A lightweight **command-line helper** that turns your tabular data (patients / acquisitions / features) into Postman collections and, if you wish, uploads them to **PHI-DB** in a single shot.
 
 ---
 
@@ -8,7 +8,7 @@ A lightweight **command-line helper** that turns your tabular data (patients / a
   * `build` – generate JSON collections only (offline).  
   * `run`  – generate **and** `POST` them to the API (online).
 * Works with **CSV, TSV or Excel** sheets.
-* Strict validation of acquisition / feature types.
+* Strict validation of imaging acquisition and feature types according to EBRAINS Data Management Plan.
 * Single login per session 
 
 ---
@@ -20,14 +20,14 @@ A lightweight **command-line helper** that turns your tabular data (patients / a
 
 ---
 
-## Installation (5 lines)
+## Installation
 
 ```bash
 # grab the source
 git clone https://github.com/seba-96/phi-uploader.git
 cd phi-uploader
 
-# Create virtual environment (optional but recommended)
+# Create a virtual environment (optional but recommended)
 python -m venv .venv 
 # Activate the virtual environment (Linux / macOS)
 source .venv/bin/activate  
@@ -52,10 +52,9 @@ phi-uploader build \
     --behavioral --clinical
 ```
 This will generate the following files in ./API/ depending on the input files:
-
-MyStudy_add_patient_API.json
-MyStudy_add_acquisition_API.json
-MyStudy_add_feature_API.json
+- MyStudy_add_patient_API.json
+- MyStudy_add_acquisition_API.json
+- MyStudy_add_feature_API.json
 
 ### Run a collection
 ```bash
@@ -65,19 +64,50 @@ phi-uploader run \
     --skip-build
 ```
 
-| Flag              | Purpose                                                    |
-| ----------------- |------------------------------------------------------------|
-| `--features FILE` | table with feature rows                                    |
-| `--n-test 10`     | build/upload **first 10 rows only** (for testing purposes) |
-| `--skip-build`    | in `run` mode: reuse JSON already in `API/`                |
 
-## Typical 422 errors
-| JSON response                | Meaning / fix                                                                       |
-|------------------------------|-------------------------------------------------------------------------------------|
-| Remote has already been taken | Patient already exists in PHI-DB.                                                   |
-| Missing patient for <id>     | Upload the patient **before** its acquisition.                                      |
-| has already been taken       | Each patient may have only **one** acquisition per type.                            |
-| Missing root folder for patient | Patient folder is missing in PHI. Check that participant_id and dataset are correct |
+### CLI Common Flags (used by both commands build and run)
+
+| Flag              | Description                                                                         | Default                        |
+| ----------------- | ----------------------------------------------------------------------------------- |--------------------------------|
+| `--template`      | Path to the Postman JSON template.                                                | `template/postman.json`        |
+| `--dataset`       | Dataset name (used in output file names).                                          | `WashU`                        |
+| `--root`          | Root directory for generated files.                                               | `.`  (i.e., current directory) |
+| `--n-test N`      | Only generate the first N rows (for debugging/testing purposes).                    | None (optional)                |
+
+### CLI Flags for the `build` Command
+
+| Flag              | Description                                                                         | Default/Required        |
+| ----------------- | ----------------------------------------------------------------------------------- | ----------------------- |
+| `--patient`       | CSV/TSV/XLSX file with participant data.                                            | Optional                |
+| `--acquisition`   | CSV/TSV/XLSX file with acquisitions data.                                           | Optional                |
+| `--feature`       | CSV/TSV/XLSX file with features data.                                               | Optional                |
+| `--behavioral`    | When present, set the behavioral flag                          | Default: False          |
+| `--clinical`      | When present, set the clinical flag                           | Default: False          |
+
+### CLI Flags for the `run` Command
+
+| Flag              | Description                                                                                                       | Default/Required            |
+| ----------------- |-------------------------------------------------------------------------------------------------------------------|-----------------------------|
+| `--patient`       | Optional CSV/TSV/XLSX file with participant data (if not skipping the build, used to generate JSON collections).  | Optional                    |
+| `--acquisition`   | Optional CSV/TSV/XLSX file with acquisitions data (if not skipping the build, used to generate JSON collections). | Optional                    |
+| `--feature`       | Optional CSV/TSV/XLSX file with features data (if not skipping the build, used to generate JSON collections).     | Optional                    |
+| `--email`         | PHI-DB login email used for authentication.                                                                       | Required                    |
+| `--password`      | PHI-DB login password used for authentication.                                                                    | Required                    |
+| `--base-url`      | Base URL for the API                                                                                              | Defined already by the tool |
+| `--skip-build`    | When present, skips building JSON collections and uses those already available in the `API/` folder.              | Default: True               |
+| `--retry-failed`  | When present, (re)uploads only collections in `API/not_uploaded` and overwrites their TSV/JSON summaries.         | Default: False              |
+
+
+## Typical errors
+| Error                                 | Meaning / fix                                                                        |
+|---------------------------------------|--------------------------------------------------------------------------------------|
+| Remote has already been taken         | Patient already exists in PHI-DB.                                                    |
+| Missing patient for id                | Upload the patient **before** its acquisition.                                       |
+| Has already been taken                | Each patient may have only **one** acquisition/feature per type.                     |
+| Missing root folder for patient       | Patient folder is missing in PHI. Check that participant_id and dataset are correct. |
+| Client Error: Unauthorized for url    | Either email or password for accessing PHI-DB are incorrect                          |
+| Missing files for type of acquisition | Files are missing for the given acquisition type. Check patient folder in PHI        |
+| Wrong feature type                    | Check valid feature types in EBRAINS Data Management Plan                            |
 
 
 
