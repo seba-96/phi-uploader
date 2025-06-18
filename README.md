@@ -39,6 +39,14 @@ pip install -e .
 ```
 
 ## Usage
+### Setup
+```bash
+# Change to the directory where you cloned the repository
+cd phi-uploader
+# activate the virtual environment if you created one
+source .venv/bin/activate  # Linux / macOS
+# for Windows run the following instead: . .venv\\Scripts\\Activate.ps1
+```
 ### Show help
 ```bash
 phi-uploader --help
@@ -115,9 +123,9 @@ phi-uploader run \
 ```bash
 # if you installed in editable mode
 git pull
-pip install -e .
+python -m pip install -e .
 # if you installed in non-editable mode
-pip install -U --force-reinstall .
+python -m pip install -U --force-reinstall .
 ```
 
 ## License

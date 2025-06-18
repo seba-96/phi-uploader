@@ -12,7 +12,7 @@ Build JSON collections only:
          --dataset WashU \
          --behavioral \
          --clinical \
-         --n-test 20
+         --n-test 8
 
 Upload the built JSON collections to PHI-DB:
 
