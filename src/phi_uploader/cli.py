@@ -11,7 +11,8 @@ Build JSON collections only:
          --acquisition ./Clinical_connectome/UNIPD/WashU/acquisitions.tsv \
          --dataset WashU \
          --behavioral \
-         --clinical
+         --clinical \
+         --n-test 20
 
 Upload the built JSON collections to PHI-DB:
 
@@ -424,7 +425,7 @@ def cli_run(argv: list[str]) -> None:
     ns = ap.parse_args(argv)
 
     if ns.password is None:
-        ns.password = getpass.getpass("Enter API password: ")
+        ns.password = getpass.getpass("Enter PHI-DB password: ")
 
     if not ns.skip_build:
         args_for_build = [
