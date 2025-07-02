@@ -15,7 +15,7 @@ A lightweight **command-line helper** that turns your tabular data (patients / a
 ## Installation
 
 First install docker if you don't have it already (https://docs.docker.com/get-docker/)
-Then, you can install the phi-uploader tool by opening a terminal and running the following commands:
+Then, you can install (or update, if it is already installed) the phi-uploader tool by opening a terminal and running the following commands:
 
 ```bash
 # first change the directory where the data is stored
@@ -69,8 +69,8 @@ docker run --rm -it -v ${PWD}:/work -w /work phi-uploader:latest run --patient p
 
 | Flag              | Description                                                                         | Default/Required        |
 | ----------------- | ----------------------------------------------------------------------------------- | ----------------------- |
-| `--patient`       | CSV/TSV/XLSX file with participant data.                                            | Optional                |
-| `--acquisition`   | CSV/TSV/XLSX file with acquisitions data.                                           | Optional                |
+| `--patient`       | CSV/TSV/XLSX file with participant data.                                            | participants.tsv                |
+| `--acquisition`   | CSV/TSV/XLSX file with acquisitions data.                                           | acquisitions.tsv                |
 | `--feature`       | CSV/TSV/XLSX file with features data.                                               | Optional                |
 | `--behavioral`    | When present, set the behavioral flag                          | Default: False          |
 | `--clinical`      | When present, set the clinical flag                           | Default: False          |
@@ -79,8 +79,8 @@ docker run --rm -it -v ${PWD}:/work -w /work phi-uploader:latest run --patient p
 
 | Flag              | Description                                                                                                       | Default/Required                              |
 | ----------------- |-------------------------------------------------------------------------------------------------------------------|-----------------------------------------------|
-| `--patient`       | Optional CSV/TSV/XLSX file with participant data (if not skipping the build, used to generate JSON collections).  | Optional                                      |
-| `--acquisition`   | Optional CSV/TSV/XLSX file with acquisitions data (if not skipping the build, used to generate JSON collections). | Optional                                      |
+| `--patient`       | Optional CSV/TSV/XLSX file with participant data (if not skipping the build, used to generate JSON collections).  | participants.tsv                                      |
+| `--acquisition`   | Optional CSV/TSV/XLSX file with acquisitions data (if not skipping the build, used to generate JSON collections). | acquisitions.tsv                                      |
 | `--feature`       | Optional CSV/TSV/XLSX file with features data (if not skipping the build, used to generate JSON collections).     | Optional                                      |
 | `--email`         | PHI-DB login email used for authentication.                                                                       | Required                                      |
 | `--password`      | PHI-DB login password used for authentication.                                                                    | Optional (can be entered later when prompted) |

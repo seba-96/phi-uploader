@@ -360,8 +360,8 @@ def _add_common_io_args(p: argparse.ArgumentParser) -> None:
 def cli_build(argv: list[str]) -> None:
     ap = argparse.ArgumentParser("build", description="Generate Postman collections only.")
     _add_common_io_args(ap)
-    ap.add_argument("--patient", help="CSV/TSV/XLSX with participant data")
-    ap.add_argument("--acquisition", help="CSV/TSV/XLSX with acquisitions data")
+    ap.add_argument("--patient", default='participants.tsv', help="CSV/TSV/XLSX with participant data")
+    ap.add_argument("--acquisition", default='acquisitions.tsv', help="CSV/TSV/XLSX with acquisitions data")
     ap.add_argument("--feature", help="CSV/TSV/XLSX with features data")
     ap.add_argument("--behavioral", default=False, action="store_true")
     ap.add_argument("--clinical", default=False, action="store_true")
