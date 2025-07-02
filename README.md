@@ -27,7 +27,7 @@ docker build -t phi-uploader:latest https://github.com/seba-96/phi-uploader.git
 ### Setup
 Open the docker application and run the following commands to build and run the collection.
 
-#### Build a collection
+### Build a collection
 For linux/macOS
 ```bash
 docker run --rm -it -v "$PWD":/work -w /work phi-uploader:latest build --behavioral --clinical --dataset MyStudy 
