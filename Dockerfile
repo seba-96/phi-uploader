@@ -1,24 +1,21 @@
-# ── Dockerfile ──────────────────────────────────────────────────────────────
+# ---- Dockerfile ----------------------------------------------------------
 FROM python:3.11-slim
 
-# 0. prevent Python from writing .pyc files & enable quicker stdout
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
-
 WORKDIR /app
 
-# 1. copy project metadata  (needed for packaging)
+# 1. project metadata (allows layer-caching for deps)
 COPY pyproject.toml README.md ./
 
-# 2. copy the actual source *now* so it's available to the build backend
-COPY src src
+# 2. project source *before* installation
+COPY src/ src/
 
-# 3. install the package (creates the 'phi-uploader' console script)
+# 3. install; this drops the console-script into /usr/local/bin/
 RUN pip install --no-cache-dir .
 
-# 4. run as non-root for good measure
+# 4. non-root user (optional safety)
 RUN useradd -m uploader
 USER uploader
 
-ENTRYPOINT ["phi-uploader"]     # default command inside the container
-# ---------------------------------------------------------------------------
-
+# JSON form ⇒ extra words are appended (phi-uploader build …)
+ENTRYPOINT ["phi-uploader"]
