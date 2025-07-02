@@ -7,57 +7,36 @@ A lightweight **command-line helper** that turns your tabular data (patients / a
 * **Two sub-commands**  
   * `build` – generate JSON collections only (offline).  
   * `run`  – generate **and** `POST` them to the API (online).
-* Works with **CSV, TSV or Excel** sheets.
 * Strict validation of imaging acquisition and feature types according to EBRAINS Data Management Plan.
-* Single login per session 
-
----
-
-## Prerequisites
-* Python ≥ 3.9 (download from [python.org](https://www.python.org/downloads/))
-* `git` (download from [git-scm.com](https://git-scm.com/downloads))
-* A PHI-DB account (e-mail and password) for the `run` step.
+* Single login per session
 
 ---
 
 ## Installation
 
+First install docker if you don't have it already (https://docs.docker.com/get-docker/)
+Then, you can install the phi-uploader tool by opening a terminal and running the following commands:
+
 ```bash
-# grab the source
-git clone https://github.com/seba-96/phi-uploader.git
-cd phi-uploader
-
-# Create a virtual environment (optional but recommended)
-python -m venv .venv 
-# Activate the virtual environment (Linux / macOS)
-source .venv/bin/activate  
-# for Windows run the following instead: . .venv\\Scripts\\Activate.ps1
-
-# install in editable mode (creates the 'phi-uploader' command)
-pip install -U pip
-pip install -e .
+# first change the directory where the data is stored
+cd /path/to/your/data
+docker build -t phi-uploader:latest https://github.com/seba-96/phi-uploader.git
 ```
 
 ## Usage
 ### Setup
+Open the docker application and run the following commands to build and run the collection.
+
+#### Build a collection
+For linux/macOS
 ```bash
-# Change to the directory where you cloned the repository
-cd phi-uploader
-# activate the virtual environment if you created one
-source .venv/bin/activate  # Linux / macOS
-# for Windows run the following instead: . .venv\\Scripts\\Activate.ps1
+docker run --rm -it -v "$PWD":/work -w /work phi-uploader:latest build --patient participants.tsv --acquisition acquisitions.tsv \
+ --dataset MyStudy --behavioral --clinical 
 ```
-### Show help
+For Windows (PowerShell)
 ```bash
-phi-uploader --help
-```
-### Build a collection
-```bash
-phi-uploader build \
-    --patient participants.tsv \
-    --acquisition acquisitions.tsv \
-    --dataset MyStudy \
-    --behavioral --clinical
+docker run --rm -it -v ${PWD}:/work -w /work phi-uploader:latest build --patient participants.tsv --acquisition acquisitions.tsv \
+--dataset MyStudy --behavioral --clinical
 ```
 This will generate the following files in ./API/ depending on the input files:
 - MyStudy_add_patient_API.json
@@ -65,11 +44,15 @@ This will generate the following files in ./API/ depending on the input files:
 - MyStudy_add_feature_API.json
 
 ### Run a collection
+For linux/macOS
 ```bash
-phi-uploader run \
-    --email hello@world.it \
-    --dataset MyStudy \
-    --skip-build
+docker run --rm -it -v "$PWD":/work -w /work phi-uploader:latest run --patient participants.tsv --acquisition acquisitions.tsv \
+ --dataset MyStudy --email hello@world.it --skip-build
+```
+For Windows (PowerShell)
+```bash
+docker run --rm -it -v ${PWD}:/work -w /work phi-uploader:latest run --patient participants.tsv --acquisition acquisitions.tsv \
+ --dataset MyStudy --email hello@world.it --skip-build
 ```
 
 
