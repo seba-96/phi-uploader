@@ -20,5 +20,5 @@ phi-uploader = "phi_uploader.cli:main"
 package-dir = { "" = "src" }
 
 [tool.setuptools.package-data]
-phi_uploader = ["templates/*.json"]
+phi_uploader = ["template/*.json"]
 
