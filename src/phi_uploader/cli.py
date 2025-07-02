@@ -2,24 +2,7 @@
 r"""phi_uploader.py
 ========================================
 
-Usage examples:
-~~~~~
-Build JSON collections only:
-
-    phi-uploader build \
-         --patient ./Clinical_connectome/UNIPD/WashU/participants.tsv \
-         --acquisition ./Clinical_connectome/UNIPD/WashU/acquisitions.tsv \
-         --dataset WashU \
-         --behavioral \
-         --clinical \
-         --n-test 8
-
-Upload the built JSON collections to PHI-DB:
-
-    phi-uploader run \
-         --email sebastiano.cinetto@unipd.it \
-         --dataset WashU \
-         --skip-build
+Usage examples are present in the README.md file.
 
 """
 

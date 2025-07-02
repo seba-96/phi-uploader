@@ -30,8 +30,7 @@ Open the docker application and run the following commands to build and run the 
 #### Build a collection
 For linux/macOS
 ```bash
-docker run --rm -it -v "$PWD":/work -w /work phi-uploader:latest build --patient participants.tsv --acquisition acquisitions.tsv \
- --dataset MyStudy --behavioral --clinical 
+docker run --rm -it -v "$PWD":/work -w /work phi-uploader:latest build --dataset MyStudy --behavioral --clinical 
 ```
 For Windows (PowerShell)
 ```bash
@@ -100,16 +99,6 @@ docker run --rm -it -v ${PWD}:/work -w /work phi-uploader:latest run --patient p
 | Missing files for type of acquisition | Files are missing for the given acquisition type. Check patient folder in PHI        |
 | Wrong feature type                    | Check valid feature types in EBRAINS Data Management Plan                            |
 
-
-
-## Updating the tool
-```bash
-# if you installed in editable mode
-git pull
-python -m pip install -e .
-# if you installed in non-editable mode
-python -m pip install -U --force-reinstall .
-```
 
 ## License
 MIT — feel free to use, modify and share.
