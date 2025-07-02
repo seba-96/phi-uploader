@@ -35,6 +35,7 @@ import logging
 import sys
 import time
 from pathlib import Path
+from importlib import resources  # std-lib 3.9+
 from typing import Dict, List, TypedDict, Any, Final, Iterable
 
 import pandas as pd
@@ -347,7 +348,8 @@ def bulk_upload(
 # ---------------------------------------------------------------------------
 
 def _add_common_io_args(p: argparse.ArgumentParser) -> None:
-    p.add_argument("--template", default=str(Path('.') / 'template' / 'postman.json'), help="Path to Postman JSON template")
+
+    p.add_argument("--template", default=str(resources.files("phi_uploader").joinpath("templates/postman.json")), help="Path to Postman JSON template")
     p.add_argument("--dataset", default="MyDataset", help="Dataset name (used in output file names)")
     p.add_argument("--root", default=".", help="Root directory for generated files")
     p.add_argument("--n-test", type=int, metavar="N", help="Only generate the first N rows (debug)")

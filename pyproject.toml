@@ -15,3 +15,10 @@ dependencies = [
 
 [project.scripts]
 phi-uploader = "phi_uploader.cli:main"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.package-data]
+phi_uploader = ["templates/*.json"]
+
