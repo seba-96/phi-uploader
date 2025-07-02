@@ -18,7 +18,7 @@ First install docker if you don't have it already (https://docs.docker.com/get-d
 Then, you can install (or update, if it is already installed) the phi-uploader tool by opening a terminal and running the following commands:
 
 ```bash
-# first change the directory where the data is stored
+# first change the directory where the participants.tsv and acquisitions.tsv files are stored
 cd /path/to/your/data
 docker build -t phi-uploader:latest https://github.com/seba-96/phi-uploader.git
 ```
@@ -30,12 +30,11 @@ Open the docker application and run the following commands to build and run the 
 #### Build a collection
 For linux/macOS
 ```bash
-docker run --rm -it -v "$PWD":/work -w /work phi-uploader:latest build --dataset MyStudy --behavioral --clinical 
+docker run --rm -it -v "$PWD":/work -w /work phi-uploader:latest build --behavioral --clinical --dataset MyStudy 
 ```
 For Windows (PowerShell)
 ```bash
-docker run --rm -it -v ${PWD}:/work -w /work phi-uploader:latest build --patient participants.tsv --acquisition acquisitions.tsv \
---dataset MyStudy --behavioral --clinical
+docker run --rm -it -v ${PWD}:/work -w /work phi-uploader:latest build --behavioral --clinical --dataset MyStudy 
 ```
 This will generate the following files in ./API/ depending on the input files:
 - MyStudy_add_patient_API.json
@@ -45,13 +44,11 @@ This will generate the following files in ./API/ depending on the input files:
 ### Run a collection
 For linux/macOS
 ```bash
-docker run --rm -it -v "$PWD":/work -w /work phi-uploader:latest run --patient participants.tsv --acquisition acquisitions.tsv \
- --dataset MyStudy --email hello@world.it --skip-build
+docker run --rm -it -v "$PWD":/work -w /work phi-uploader:latest run --dataset MyStudy --email hello@world.it 
 ```
 For Windows (PowerShell)
 ```bash
-docker run --rm -it -v ${PWD}:/work -w /work phi-uploader:latest run --patient participants.tsv --acquisition acquisitions.tsv \
- --dataset MyStudy --email hello@world.it --skip-build
+docker run --rm -it -v ${PWD}:/work -w /work phi-uploader:latest run --dataset MyStudy --email hello@world.it 
 ```
 
 
@@ -66,13 +63,13 @@ docker run --rm -it -v ${PWD}:/work -w /work phi-uploader:latest run --patient p
 
 ### CLI Flags for the `build` Command
 
-| Flag              | Description                                                                         | Default/Required        |
-| ----------------- | ----------------------------------------------------------------------------------- | ----------------------- |
-| `--patient`       | CSV/TSV/XLSX file with participant data.                                            | participants.tsv                |
-| `--acquisition`   | CSV/TSV/XLSX file with acquisitions data.                                           | acquisitions.tsv                |
-| `--feature`       | CSV/TSV/XLSX file with features data.                                               | Optional                |
-| `--behavioral`    | When present, set the behavioral flag                          | Default: False          |
-| `--clinical`      | When present, set the clinical flag                           | Default: False          |
+| Flag              | Description                                                                             | Default/Required        |
+| ----------------- |-----------------------------------------------------------------------------------------| ----------------------- |
+| `--patient`       | CSV/TSV/XLSX file with participant data.                                                | participants.tsv                |
+| `--acquisition`   | CSV/TSV/XLSX file with acquisitions data.                                               | acquisitions.tsv                |
+| `--feature`       | CSV/TSV/XLSX file with features data.                                                   | Optional                |
+| `--behavioral`    | When behavioral information is present in the participants.tsv, set the behavioral flag | Default: False          |
+| `--clinical`      | When clinical information is present in the participants.tsv, set the clinical flag     | Default: False          |
 
 ### CLI Flags for the `run` Command
 
@@ -98,10 +95,8 @@ docker run --rm -it -v ${PWD}:/work -w /work phi-uploader:latest run --patient p
 | Client Error: Unauthorized for url    | Either email or password for accessing PHI-DB are incorrect                          |
 | Missing files for type of acquisition | Files are missing for the given acquisition type. Check patient folder in PHI        |
 | Wrong feature type                    | Check valid feature types in EBRAINS Data Management Plan                            |
+| FileNotFoundError: participants.tsv                                      | Change the directory to where the participants.tsv file is stored                    |
 
-
-## License
-MIT — feel free to use, modify and share.
 
 ## What changed?
 First release, there are no changes yet.
