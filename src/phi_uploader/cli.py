@@ -336,6 +336,7 @@ def _add_common_io_args(p: argparse.ArgumentParser) -> None:
     p.add_argument("--dataset", default="MyDataset", help="Dataset name (used in output file names)")
     p.add_argument("--root", default=".", help="Root directory for generated files")
     p.add_argument("--n-test", type=int, metavar="N", help="Only generate the first N rows (debug)")
+    p.add_argument("--five-m", dest="patient_5m", action="store_true", help="Use the 'Add patient 5M' Postman item for patient uploads")
 
 
 # Build sub‑command ---------------------------------------------------------
@@ -350,6 +351,8 @@ def cli_build(argv: list[str]) -> None:
     ap.add_argument("--clinical", default=False, action="store_true")
     ns = ap.parse_args(argv)
 
+    patient_item_name = "Add patient 5M" if ns.patient_5m else "Add patient"
+
     # Load login snippet + reusable templates ---------------------------
     template_path = ns.template
     root = Path(ns.root).resolve()
@@ -361,7 +364,14 @@ def cli_build(argv: list[str]) -> None:
     login_snippet = [it for it in full_template["item"] if it["name"] == "Login"][-1]
 
     # Helper to process each entity ------------------------------------
-    def _process(kind: str, df: pd.DataFrame | None, valid_types: set[str] | None = None):
+    def _process(
+        kind: str,
+        df: pd.DataFrame | None,
+        *,
+        valid_types: set[str] | None = None,
+        item_name: str | None = None,
+        template_source_name: str | None = None,
+    ):
         if df is None or df.empty:
             return
         LOGGER.info("%s rows in %s", len(df), kind)
@@ -386,10 +396,20 @@ def cli_build(argv: list[str]) -> None:
                 raise ValueError(f"Invalid {kind} types: {sorted(invalid)}")
         df = _ensure_columns(df, req)
         outfile = api_dir / f"{ns.dataset}_add_{kind}_API.json"
-        tmpl = _load_postman_template(template_path, f"Add {kind}")
+        template_source = template_source_name or f"Add {kind}"
+        target_name = item_name or template_source
+        tmpl = _load_postman_template(template_path, template_source)
+        if target_name != tmpl.get("name"):
+            tmpl = json.loads(json.dumps(tmpl))
+            tmpl["name"] = target_name
         _build_collection(df, tmpl, login_snippet, outfile, ns.n_test)
 
-    _process("patient", _read_table(ns.patient))
+    _process(
+        "patient",
+        _read_table(ns.patient),
+        item_name=patient_item_name,
+        template_source_name="Add patient",
+    )
     _process("acquisition", _read_table(ns.acquisition), valid_types=VALID_ACQ_TYPES)
     _process("feature", _read_table(ns.feature), valid_types=VALID_FEATURE_TYPES)
 
@@ -408,6 +428,7 @@ def cli_run(argv: list[str]) -> None:
     ap.add_argument("--skip-build", default=True, action="store_true", help="Assume JSON collections already exist under --root/API")
     ap.add_argument("--retry-failed", default=False, action="store_true", help="(Re)upload only collections stored in API/not_uploaded")
     ns = ap.parse_args(argv)
+    patient_item_name = "Add patient 5M" if ns.patient_5m else "Add patient"
 
     if ns.password is None:
         ns.password = getpass.getpass("Enter PHI-DB password: ")
@@ -424,6 +445,8 @@ def cli_run(argv: list[str]) -> None:
             args_for_build += ["--acquisition", ns.acquisition]
         if ns.feature:
             args_for_build += ["--feature", ns.feature]
+        if ns.patient_5m:
+            args_for_build += ["--five-m"]
         cli_build(args_for_build)  # type: ignore[arg-type]
 
     root = Path(ns.root).resolve()
@@ -432,12 +455,12 @@ def cli_run(argv: list[str]) -> None:
 
     sess = get_authenticated_session(ns.email, ns.password, base_url=ns.base_url)
 
-    def _upload(kind: str, endpoint: str, src: Path):
+    def _upload(kind: str, endpoint: str, src: Path, item_name: str):
         f = src / f"{ns.dataset}_add_{kind}_API.json"
         if not f.exists():
             LOGGER.warning("%s not found, skipping %s", f, kind)
             return
-        payloads = load_payloads(f, f"Add {kind}")
+        payloads = load_payloads(f, item_name)
         for p in payloads:
             LOGGER.debug(
                 "Prepared %s payload ‒ remote_id=%s, acquisition_type=%s, feature_type=%s",
@@ -494,7 +517,7 @@ def cli_run(argv: list[str]) -> None:
             col_path = not_uploaded_dir / f"{ns.dataset}_add_{kind}_API.json"
             try:
                 col_json = [{
-                    "name": f"Add {kind}",
+                    "name": item_name,
                     "request": {
                         "method": "POST",
                         "body": {
@@ -508,9 +531,9 @@ def cli_run(argv: list[str]) -> None:
             except Exception as exc:  # pragma: no cover
                 LOGGER.error("Could not write collection %s: %s", col_path, exc)
 
-    _upload("patient", "patients", source_dir)
-    _upload("acquisition", "imaging_acquisitions", source_dir)
-    _upload("feature", "features", source_dir)
+    _upload("patient", "patients", source_dir, patient_item_name)
+    _upload("acquisition", "imaging_acquisitions", source_dir, "Add acquisition")
+    _upload("feature", "features", source_dir, "Add feature")
 
 
 # Utility extracted from legacy script -------------------------------------
