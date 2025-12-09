@@ -96,6 +96,8 @@ VALID_ACQ_TYPES: Final[set[str]] = {
     "fMRI_task",
     "TOF",
     "SWI",
+    "SE",
+    "PCM"
 }
 
 VALID_FEATURE_TYPES: Final[set[str]] = {
@@ -105,6 +107,7 @@ VALID_FEATURE_TYPES: Final[set[str]] = {
     "pet",
     "eeg",
     "func",
+    "perf",
 }
 
 
@@ -153,6 +156,14 @@ def _fill_nans(obj: dict[str, Any]) -> dict[str, Any]:
     return obj
 
 
+def _stringify_ids(obj: dict[str, Any]) -> dict[str, Any]:
+    for field in ("data_id", "remote_id"):
+        value = obj.get(field)
+        if value is not None and not isinstance(value, str):
+            obj[field] = str(value)
+    return obj
+
+
 # ---------------------------------------------------------------------------
 # Postman collection generation
 # ---------------------------------------------------------------------------
@@ -185,6 +196,7 @@ def _build_collection(
 
     for idx, row in payloads.iloc[:n].iterrows():
         body = _fill_nans(row.to_dict())
+        body = _stringify_ids(body)
         collection["item"][idx]["request"]["body"]["raw"] = json.dumps(body, indent=4)
 
     collection["item"].append(login_snippet)
@@ -522,7 +534,7 @@ def cli_run(argv: list[str]) -> None:
                         "method": "POST",
                         "body": {
                             "mode": "raw",
-                            "raw": json.dumps(pl, indent=4),
+                            "raw": json.dumps(_stringify_ids(pl), indent=4),
                         },
                     },
                 } for pl in fail_payloads]
