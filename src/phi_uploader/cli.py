@@ -95,6 +95,7 @@ VALID_ACQ_TYPES: Final[set[str]] = {
     "dMRI",
     "fMRI_task",
     "TOF",
+    "tof",
     "SWI",
     "SE",
     "PCM"
@@ -110,13 +111,13 @@ VALID_FEATURE_TYPES: Final[set[str]] = {
     "perf",
 }
 
-
+ID_COLUMNS: Final[tuple[str, ...]] = ("participant_id", "remote_id", "data_id")
 
 # ---------------------------------------------------------------------------
 # Utility functions
 # ---------------------------------------------------------------------------
 
-def _read_table(path: str | Path | None) -> pd.DataFrame | None:
+def _read_table(path: str | Path | None, string_cols: Iterable[str] | None = None) -> pd.DataFrame | None:
     """Open *path* (csv/tsv/xlsx) to a :class:`pandas.DataFrame`.
 
     Returns ``None`` if *path* is ``None``. Raises ``FileNotFoundError`` or
@@ -129,12 +130,35 @@ def _read_table(path: str | Path | None) -> pd.DataFrame | None:
     if not path.exists():
         raise FileNotFoundError(path)
 
+    string_cols = tuple(dict.fromkeys(string_cols or ()))
+
+    def _select_converters(
+        reader: t.Callable[..., pd.DataFrame],
+        *,
+        kwargs: dict[str, Any],
+    ) -> dict[str, t.Callable[[Any], str | None]]:
+        if not string_cols:
+            return {}
+        header_kwargs = {**kwargs, "nrows": 0}
+        try:
+            header_df = reader(path, **header_kwargs)
+            available = set(header_df.columns)
+        except Exception:
+            available = set(string_cols)
+        return {col: _coerce_raw_string for col in string_cols if col in available}
+
     if path.suffix == ".csv":
-        return pd.read_csv(path)
+        kwargs = {"sep": ","}
+        converters = _select_converters(pd.read_csv, kwargs=kwargs)
+        return pd.read_csv(path, converters=converters or None, **kwargs)
     if path.suffix == ".tsv":
-        return pd.read_csv(path, sep="\t")
+        kwargs = {"sep": "\t"}
+        converters = _select_converters(pd.read_csv, kwargs=kwargs)
+        return pd.read_csv(path, converters=converters or None, **kwargs)
     if path.suffix in (".xls", ".xlsx"):
-        return pd.read_excel(path)
+        kwargs: dict[str, Any] = {}
+        converters = _select_converters(pd.read_excel, kwargs=kwargs)
+        return pd.read_excel(path, converters=converters or None, **kwargs)
 
     raise ValueError(f"Unsupported table format: {path.suffix}")
 
@@ -162,6 +186,14 @@ def _stringify_ids(obj: dict[str, Any]) -> dict[str, Any]:
         if value is not None and not isinstance(value, str):
             obj[field] = str(value)
     return obj
+
+
+def _coerce_raw_string(value: Any) -> str | None:
+    if value is None:
+        return None
+    if isinstance(value, float) and pd.isna(value):
+        return None
+    return str(value)
 
 
 # ---------------------------------------------------------------------------
@@ -375,6 +407,10 @@ def cli_build(argv: list[str]) -> None:
         full_template = json.load(f)
     login_snippet = [it for it in full_template["item"] if it["name"] == "Login"][-1]
 
+    patient_df = _read_table(ns.patient, string_cols=ID_COLUMNS)
+    acquisition_df = _read_table(ns.acquisition, string_cols=ID_COLUMNS)
+    feature_df = _read_table(ns.feature, string_cols=ID_COLUMNS)
+
     # Helper to process each entity ------------------------------------
     def _process(
         kind: str,
@@ -418,12 +454,12 @@ def cli_build(argv: list[str]) -> None:
 
     _process(
         "patient",
-        _read_table(ns.patient),
+        patient_df,
         item_name=patient_item_name,
         template_source_name="Add patient",
     )
-    _process("acquisition", _read_table(ns.acquisition), valid_types=VALID_ACQ_TYPES)
-    _process("feature", _read_table(ns.feature), valid_types=VALID_FEATURE_TYPES)
+    _process("acquisition", acquisition_df, valid_types=VALID_ACQ_TYPES)
+    _process("feature", feature_df, valid_types=VALID_FEATURE_TYPES)
 
 
 # Run (=build+upload) sub‑command -----------------------------------------
