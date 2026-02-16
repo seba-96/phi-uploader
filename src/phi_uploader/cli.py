@@ -390,7 +390,7 @@ def cli_build(argv: list[str]) -> None:
     _add_common_io_args(ap)
     ap.add_argument("--patient", default='participants.tsv', help="CSV/TSV/XLSX with participant data")
     ap.add_argument("--acquisition", default='acquisitions.tsv', help="CSV/TSV/XLSX with acquisitions data")
-    ap.add_argument("--feature", help="CSV/TSV/XLSX with features data")
+    ap.add_argument("--feature", default='features.tsv',help="CSV/TSV/XLSX with features data")
     ap.add_argument("--behavioral", default=False, action="store_true")
     ap.add_argument("--clinical", default=False, action="store_true")
     ns = ap.parse_args(argv)

@@ -63,13 +63,13 @@ docker run --rm -it -v ${PWD}:/work -w /work phi-uploader:latest run --dataset M
 
 ### CLI Flags for the `build` Command
 
-| Flag              | Description                                                                             | Default/Required        |
-| ----------------- |-----------------------------------------------------------------------------------------| ----------------------- |
-| `--patient`       | CSV/TSV/XLSX file with participant data.                                                | participants.tsv                |
-| `--acquisition`   | CSV/TSV/XLSX file with acquisitions data.                                               | acquisitions.tsv                |
-| `--feature`       | CSV/TSV/XLSX file with features data.                                                   | Optional                |
-| `--behavioral`    | When behavioral information is present in the participants.tsv, set the behavioral flag | Default: False          |
-| `--clinical`      | When clinical information is present in the participants.tsv, set the clinical flag     | Default: False          |
+| Flag              | Description                                                                             | Default/Required |
+| ----------------- |-----------------------------------------------------------------------------------------|------------------|
+| `--patient`       | CSV/TSV/XLSX file with participant data.                                                | participants.tsv |
+| `--acquisition`   | CSV/TSV/XLSX file with acquisitions data.                                               | acquisitions.tsv |
+| `--feature`       | CSV/TSV/XLSX file with features data.                                                   | features.tsv     |
+| `--behavioral`    | When behavioral information is present in the participants.tsv, set the behavioral flag | Default: False   |
+| `--clinical`      | When clinical information is present in the participants.tsv, set the clinical flag     | Default: False   |
 
 ### CLI Flags for the `run` Command
 
