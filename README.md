@@ -63,7 +63,7 @@ docker run --rm -it -v ${PWD}:/work -w /work phi-uploader:latest run --dataset M
 
 ### CLI Flags for the `build` Command
 
-| Flag              | Description                                                                             | Default/Required |
+| Flag              | Description                                                                             | Default          |
 | ----------------- |-----------------------------------------------------------------------------------------|------------------|
 | `--patient`       | CSV/TSV/XLSX file with participant data.                                                | participants.tsv |
 | `--acquisition`   | CSV/TSV/XLSX file with acquisitions data.                                               | acquisitions.tsv |

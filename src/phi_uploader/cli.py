@@ -407,9 +407,16 @@ def cli_build(argv: list[str]) -> None:
         full_template = json.load(f)
     login_snippet = [it for it in full_template["item"] if it["name"] == "Login"][-1]
 
-    patient_df = _read_table(ns.patient, string_cols=ID_COLUMNS)
-    acquisition_df = _read_table(ns.acquisition, string_cols=ID_COLUMNS)
-    feature_df = _read_table(ns.feature, string_cols=ID_COLUMNS)
+    def _try_read(path: str | None) -> pd.DataFrame | None:
+        try:
+            return _read_table(path, string_cols=ID_COLUMNS)
+        except FileNotFoundError:
+            LOGGER.warning("File not found: %s. Skipping.", path)
+            return None
+
+    patient_df = _try_read(ns.patient)
+    acquisition_df = _try_read(ns.acquisition)
+    feature_df = _try_read(ns.feature)
 
     # Helper to process each entity ------------------------------------
     def _process(
